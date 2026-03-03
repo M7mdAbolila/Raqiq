@@ -43,20 +43,33 @@ class PrayerLocalDataSource {
         .findAll();
   }
 
-  /// Calculates the current streak of consecutive 5/5 days
-  /// starting from today going backwards.
   Future<int> calculateStreak() async {
     final today = AppDateUtils.today();
     int streak = 0;
 
+    final todayEntry = await _isar.prayerDayModels
+        .filter()
+        .dateEqualTo(today)
+        .findFirst();
+
+    DateTime startDate;
+
+    if (todayEntry != null && todayEntry.completedCount == 5) {
+      startDate = today;
+    } else {
+      startDate = today.subtract(const Duration(days: 1));
+    }
+
     for (int i = 0; i < 365; i++) {
-      final date = today.subtract(Duration(days: i));
+      final date = startDate.subtract(Duration(days: i));
+
       final day = await _isar.prayerDayModels
           .filter()
           .dateEqualTo(date)
           .findFirst();
 
       if (day == null || day.completedCount != 5) break;
+
       streak++;
     }
 

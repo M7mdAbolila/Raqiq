@@ -20,18 +20,17 @@ class LoadedContentWidget extends StatelessWidget {
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
       child: Column(
+        spacing: 18,
         children: [
           StreakWidget(streak: state.streak)
               .animate()
               .fadeIn(duration: 500.ms)
               .slideY(begin: -0.1, end: 0, duration: 500.ms),
-          const SizedBox(height: 24),
 
           ProgressRingWidget(completedCount: state.today.completedCount)
               .animate()
               .fadeIn(duration: 500.ms, delay: 100.ms)
               .scaleXY(begin: 0.9, end: 1, duration: 500.ms, delay: 100.ms),
-          const SizedBox(height: 24),
 
           // Yearly Heatmap
           HeatmapSection(
@@ -46,7 +45,6 @@ class LoadedContentWidget extends StatelessWidget {
               .animate()
               .fadeIn(duration: 500.ms, delay: 200.ms)
               .slideY(begin: 0.1, end: 0, duration: 500.ms, delay: 200.ms),
-          const SizedBox(height: 24),
 
           PrayerToggleSection(
             fajr: state.today.fajr,

@@ -50,7 +50,7 @@ class HeatmapSection extends StatelessWidget {
               entries: entries,
               minDate: DateTime(now.year, 1, 1),
               maxDate: DateTime(now.year, 12, 31),
-              cellSize: 14,
+              cellSize: 18,
               cellSpacing: 3,
               cellRadius: 3,
               heatmapColor: HeatmapColor.green,

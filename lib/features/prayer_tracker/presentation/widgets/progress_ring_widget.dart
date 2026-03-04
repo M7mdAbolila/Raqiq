@@ -18,7 +18,7 @@ class ProgressRingWidget extends StatelessWidget {
     final progress = totalCount > 0 ? completedCount / totalCount : 0.0;
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 24),
+      padding: const EdgeInsets.symmetric(vertical: 12),
       child: Column(
         children: [
           Text(
@@ -95,10 +95,14 @@ class _ProgressRingPainter extends CustomPainter {
       ..shader = SweepGradient(
         startAngle: -pi / 2,
         endAngle: 3 * pi / 2,
+        tileMode: TileMode.repeated,
         colors: const [
           AppColors.emeraldLight,
           AppColors.emerald,
           AppColors.emeraldDark,
+          AppColors.emeraldDark,
+          AppColors.emerald,
+          AppColors.emeraldLight,
         ],
       ).createShader(Rect.fromCircle(center: center, radius: radius))
       ..style = PaintingStyle.stroke

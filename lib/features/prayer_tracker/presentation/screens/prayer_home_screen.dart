@@ -7,14 +7,14 @@ import '../cubit/prayer_state.dart';
 import '../widgets/home_app_bar_widget.dart';
 import '../widgets/loaded_content_widget.dart';
 
-class PrayerHomeScreen extends StatefulWidget {
-  const PrayerHomeScreen({super.key});
+class PrayerTrakerScreen extends StatefulWidget {
+  const PrayerTrakerScreen({super.key});
 
   @override
-  State<PrayerHomeScreen> createState() => _PrayerHomeScreenState();
+  State<PrayerTrakerScreen> createState() => _PrayerTrakerScreenState();
 }
 
-class _PrayerHomeScreenState extends State<PrayerHomeScreen> {
+class _PrayerTrakerScreenState extends State<PrayerTrakerScreen> {
   late final ConfettiController _confettiController;
 
   @override
@@ -52,25 +52,7 @@ class _PrayerHomeScreenState extends State<PrayerHomeScreen> {
               }
 
               if (state is PrayerError) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.error_outline,
-                        size: 48,
-                        color: Colors.red,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(state.message),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () => context.read<PrayerCubit>().loadData(),
-                        child: const Text('Retry'),
-                      ),
-                    ],
-                  ),
-                );
+                return _buildErrorWidget(state, context);
               }
 
               final loaded = state as PrayerLoaded;
@@ -93,6 +75,24 @@ class _PrayerHomeScreenState extends State<PrayerHomeScreen> {
               AppColors.emeraldDark,
               Colors.white,
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Center _buildErrorWidget(PrayerError state, BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.error_outline, size: 48, color: Colors.red),
+          const SizedBox(height: 16),
+          Text(state.message),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () => context.read<PrayerCubit>().loadData(),
+            child: const Text('Retry'),
           ),
         ],
       ),

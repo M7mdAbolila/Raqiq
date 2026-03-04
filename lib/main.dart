@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'app/app.dart';
+import 'core/routing/app_router.dart';
 import 'features/prayer_tracker/presentation/cubit/prayer_cubit.dart';
 import 'features/prayer_tracker/presentation/cubit/theme_cubit.dart';
 
@@ -22,7 +23,7 @@ Future<void> main() async {
         BlocProvider.value(value: prayerCubit),
         BlocProvider.value(value: themeCubit),
       ],
-      child: const RaqiqApp(),
+      child: RaqiqApp(appRouter: AppRouter()),
     ),
   );
 }

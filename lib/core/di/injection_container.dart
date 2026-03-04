@@ -8,14 +8,21 @@ import '../../features/prayer_tracker/data/models/prayer_day_model.dart';
 import '../../features/prayer_tracker/data/repos/prayer_repository_impl.dart';
 import '../../features/prayer_tracker/domain/repos/prayer_repository.dart';
 import '../../features/prayer_tracker/presentation/cubit/prayer_cubit.dart';
-import '../../features/prayer_tracker/presentation/cubit/theme_cubit.dart';
+import '../../app/theme/theme_cubit/theme_cubit.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  // SharedPreferences
+  final prefs = await SharedPreferences.getInstance();
+  final isDark = prefs.getBool('is_dark_mode') ?? true;
+  final initialThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+
   // Cubits
   sl.registerFactory(() => PrayerCubit(sl()));
-  sl.registerFactory(() => ThemeCubit());
+  sl.registerLazySingleton(() => ThemeCubit(initialThemeMode));
 
   // Repository
   sl.registerLazySingleton<PrayerRepository>(() => PrayerRepositoryImpl(sl()));

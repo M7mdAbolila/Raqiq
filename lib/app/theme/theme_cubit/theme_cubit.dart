@@ -6,13 +6,7 @@ import 'theme_state.dart';
 class ThemeCubit extends Cubit<ThemeState> {
   static const _key = 'is_dark_mode';
 
-  ThemeCubit() : super(const ThemeState(themeMode: ThemeMode.dark));
-
-  Future<void> loadTheme() async {
-    final prefs = await SharedPreferences.getInstance();
-    final isDark = prefs.getBool(_key) ?? true;
-    emit(ThemeState(themeMode: isDark ? ThemeMode.dark : ThemeMode.light));
-  }
+  ThemeCubit(ThemeMode initialMode) : super(ThemeState(themeMode: initialMode));
 
   Future<void> toggleTheme() async {
     final newMode = state.isDark ? ThemeMode.light : ThemeMode.dark;

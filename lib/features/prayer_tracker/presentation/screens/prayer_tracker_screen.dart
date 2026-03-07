@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -82,6 +84,7 @@ class _PrayerTrackerScreenState extends State<PrayerTrackerScreen> {
   }
 
   Center _buildErrorWidget(PrayerError state, BuildContext context) {
+    log(state.message);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

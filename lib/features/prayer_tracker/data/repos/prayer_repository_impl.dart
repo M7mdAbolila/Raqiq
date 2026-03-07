@@ -1,7 +1,9 @@
 import '../../domain/entities/prayer_day.dart';
+import '../../domain/entities/streak_info.dart';
 import '../../domain/repos/prayer_repository.dart';
 import '../datasources/prayer_local_datasource.dart';
 import '../models/prayer_day_model.dart';
+import '../models/streak_model.dart';
 
 class PrayerRepositoryImpl implements PrayerRepository {
   final PrayerLocalDataSource _localDataSource;
@@ -28,8 +30,21 @@ class PrayerRepositoryImpl implements PrayerRepository {
   }
 
   @override
-  Future<int> calculateStreak() async {
-    return _localDataSource.calculateStreak();
+  Future<StreakInfo> getStreak() async {
+    final model = await _localDataSource.getStreak();
+    return _streakModelToEntity(model);
+  }
+
+  @override
+  Future<StreakInfo> updateStreak(DateTime date) async {
+    final model = await _localDataSource.updateStreak(date);
+    return _streakModelToEntity(model);
+  }
+
+  @override
+  Future<StreakInfo> decreaseStreak(DateTime date) async {
+    final model = await _localDataSource.decreaseStreak(date);
+    return _streakModelToEntity(model);
   }
 
   PrayerDay _modelToEntity(PrayerDayModel model) {
@@ -53,5 +68,13 @@ class PrayerRepositoryImpl implements PrayerRepository {
       ..asr = entity.asr
       ..maghrib = entity.maghrib
       ..isha = entity.isha;
+  }
+
+  StreakInfo _streakModelToEntity(StreakModel model) {
+    return StreakInfo(
+      currentStreak: model.currentStreak,
+      longestStreak: model.longestStreak,
+      lastCompletedDate: model.lastCompletedDate,
+    );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../features/prayer_tracker/presentation/cubit/prayer_cubit.dart';
-import '../../features/prayer_tracker/presentation/screens/prayer_home_screen.dart';
+import '../../features/prayer_tracker/presentation/screens/prayer_tracker_screen.dart';
 import '../di/injection_container.dart' as di;
 import 'routes.dart';
 

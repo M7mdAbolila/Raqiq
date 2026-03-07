@@ -4,6 +4,8 @@ import '../../domain/usecases/get_or_create_day_usecase.dart';
 import '../../domain/usecases/get_streak_usecase.dart';
 import '../../domain/usecases/get_year_data_usecase.dart';
 import '../../domain/usecases/update_day_usecase.dart';
+import '../../domain/usecases/update_streak_usecase.dart';
+import '../../domain/usecases/decrease_streak_usecase.dart';
 import '../../domain/entities/prayer_day.dart';
 import 'prayer_state.dart';
 
@@ -12,16 +14,22 @@ class PrayerCubit extends Cubit<PrayerState> {
   final GetYearDataUseCase _getYearDataUseCase;
   final GetStreakUseCase _getStreakUseCase;
   final UpdateDayUseCase _updateDayUseCase;
+  final UpdateStreakUseCase _updateStreakUseCase;
+  final DecreaseStreakUseCase _decreaseStreakUseCase;
 
   PrayerCubit({
     required GetOrCreateDayUseCase getOrCreateDayUseCase,
     required GetYearDataUseCase getYearDataUseCase,
     required GetStreakUseCase getStreakUseCase,
     required UpdateDayUseCase updateDayUseCase,
+    required UpdateStreakUseCase updateStreakUseCase,
+    required DecreaseStreakUseCase decreaseStreakUseCase,
   }) : _getOrCreateDayUseCase = getOrCreateDayUseCase,
        _getYearDataUseCase = getYearDataUseCase,
        _getStreakUseCase = getStreakUseCase,
        _updateDayUseCase = updateDayUseCase,
+       _updateStreakUseCase = updateStreakUseCase,
+       _decreaseStreakUseCase = decreaseStreakUseCase,
        super(const PrayerInitial());
 
   Future<void> loadData() async {
@@ -30,7 +38,7 @@ class PrayerCubit extends Cubit<PrayerState> {
       final today = await _getOrCreateDayUseCase(AppDateUtils.today());
       final year = DateTime.now().year;
       final yearData = await _getYearDataUseCase(year);
-      final streak = await _getStreakUseCase();
+      final streakInfo = await _getStreakUseCase();
 
       final heatmapData = <DateTime, PrayerDay>{};
       for (final day in yearData) {
@@ -38,7 +46,11 @@ class PrayerCubit extends Cubit<PrayerState> {
       }
 
       emit(
-        PrayerLoaded(today: today, heatmapData: heatmapData, streak: streak),
+        PrayerLoaded(
+          today: today,
+          heatmapData: heatmapData,
+          streakInfo: streakInfo,
+        ),
       );
     } catch (e) {
       emit(PrayerError(e.toString()));
@@ -53,18 +65,24 @@ class PrayerCubit extends Cubit<PrayerState> {
       final wasFullBefore = current.today.isFullDay;
       final toggled = current.today.togglePrayer(prayerName);
       final updated = await _updateDayUseCase(toggled);
-      final streak = await _getStreakUseCase();
 
       final heatmapData = Map<DateTime, PrayerDay>.from(current.heatmapData);
       heatmapData[AppDateUtils.normalizeDate(updated.date)] = updated;
 
       final showConfetti = !wasFullBefore && updated.isFullDay;
 
+      var streakInfo = current.streakInfo;
+      if (!wasFullBefore && updated.isFullDay) {
+        streakInfo = await _updateStreakUseCase(updated.date);
+      } else if (wasFullBefore && !updated.isFullDay) {
+        streakInfo = await _decreaseStreakUseCase(updated.date);
+      }
+
       emit(
         current.copyWith(
           today: updated,
           heatmapData: heatmapData,
-          streak: streak,
+          streakInfo: streakInfo,
           showConfetti: showConfetti,
         ),
       );

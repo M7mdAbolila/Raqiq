@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../app/theme/app_colors.dart';
+import '../../domain/entities/streak_info.dart';
 
 class StreakWidget extends StatelessWidget {
-  final int streak;
+  final StreakInfo streakInfo;
 
-  const StreakWidget({super.key, required this.streak});
+  const StreakWidget({super.key, required this.streakInfo});
 
   @override
   Widget build(BuildContext context) {
@@ -46,29 +47,66 @@ class StreakWidget extends StatelessWidget {
                 color: AppColors.emerald.withValues(alpha: 0.3),
               ),
           const SizedBox(width: 16),
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 400),
-            transitionBuilder: (child, animation) {
-              return ScaleTransition(scale: animation, child: child);
-            },
-            child: Text(
-              '$streak',
-              key: ValueKey(streak),
-              style: TextStyle(
-                fontSize: 48,
-                fontWeight: FontWeight.w900,
-                color: isDark ? AppColors.darkText : AppColors.lightText,
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 400),
+                transitionBuilder: (child, animation) {
+                  return ScaleTransition(scale: animation, child: child);
+                },
+                child: Text(
+                  '${streakInfo.currentStreak}',
+                  key: ValueKey(streakInfo.currentStreak),
+                  style: TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.w900,
+                    color: isDark ? AppColors.darkText : AppColors.lightText,
+                  ),
+                ),
               ),
-            ),
+              Text(
+                'day streak',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: isDark
+                      ? AppColors.darkSubtext
+                      : AppColors.lightSubtext,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 8),
-          Text(
-            'day streak',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: isDark ? AppColors.darkSubtext : AppColors.lightSubtext,
-            ),
+          const SizedBox(width: 24),
+          Container(
+            width: 1,
+            height: 50,
+            color: (isDark ? AppColors.darkSubtext : AppColors.lightSubtext)
+                .withValues(alpha: 0.3),
+          ),
+          const SizedBox(width: 24),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '${streakInfo.longestStreak}',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.emerald,
+                ),
+              ),
+              Text(
+                'best',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: isDark
+                      ? AppColors.darkSubtext
+                      : AppColors.lightSubtext,
+                ),
+              ),
+            ],
           ),
         ],
       ),

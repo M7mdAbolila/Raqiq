@@ -22,7 +22,7 @@ class LoadedContentWidget extends StatelessWidget {
       child: Column(
         spacing: 18,
         children: [
-          StreakWidget(streak: state.streak)
+          StreakWidget(streakInfo: state.streakInfo)
               .animate()
               .fadeIn(duration: 500.ms)
               .slideY(begin: -0.1, end: 0, duration: 500.ms),

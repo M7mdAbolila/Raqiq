@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../../domain/entities/prayer_day.dart';
+import '../../domain/entities/streak_info.dart';
 
 abstract class PrayerState extends Equatable {
   const PrayerState();
@@ -21,33 +22,33 @@ class PrayerLoaded extends PrayerState {
 
   final Map<DateTime, PrayerDay> heatmapData;
 
-  final int streak;
+  final StreakInfo streakInfo;
 
   final bool showConfetti;
 
   const PrayerLoaded({
     required this.today,
     required this.heatmapData,
-    required this.streak,
+    required this.streakInfo,
     this.showConfetti = false,
   });
 
   PrayerLoaded copyWith({
     PrayerDay? today,
     Map<DateTime, PrayerDay>? heatmapData,
-    int? streak,
+    StreakInfo? streakInfo,
     bool? showConfetti,
   }) {
     return PrayerLoaded(
       today: today ?? this.today,
       heatmapData: heatmapData ?? this.heatmapData,
-      streak: streak ?? this.streak,
+      streakInfo: streakInfo ?? this.streakInfo,
       showConfetti: showConfetti ?? this.showConfetti,
     );
   }
 
   @override
-  List<Object?> get props => [today, heatmapData, streak, showConfetti];
+  List<Object?> get props => [today, heatmapData, streakInfo, showConfetti];
 }
 
 class PrayerError extends PrayerState {

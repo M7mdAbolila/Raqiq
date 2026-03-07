@@ -1,4 +1,5 @@
 import '../entities/prayer_day.dart';
+import '../entities/streak_info.dart';
 
 abstract class PrayerRepository {
   Future<PrayerDay> getOrCreateDay(DateTime date);
@@ -7,5 +8,9 @@ abstract class PrayerRepository {
 
   Future<List<PrayerDay>> getYearData(int year);
 
-  Future<int> calculateStreak();
+  Future<StreakInfo> getStreak();
+
+  Future<StreakInfo> updateStreak(DateTime date);
+
+  Future<StreakInfo> decreaseStreak(DateTime date);
 }

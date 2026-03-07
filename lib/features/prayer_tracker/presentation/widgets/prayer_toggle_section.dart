@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:raqiq/features/prayer_tracker/presentation/widgets/prayer_toggole_card.dart';
+import 'package:raqiq/features/prayer_tracker/presentation/widgets/prayer_toggle_card.dart';
 import '../../../../app/theme/app_colors.dart';
 
 class PrayerInfo {

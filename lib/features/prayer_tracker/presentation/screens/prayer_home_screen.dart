@@ -7,14 +7,14 @@ import '../cubit/prayer_state.dart';
 import '../widgets/home_app_bar_widget.dart';
 import '../widgets/loaded_content_widget.dart';
 
-class PrayerTrakerScreen extends StatefulWidget {
-  const PrayerTrakerScreen({super.key});
+class PrayerTrackerScreen extends StatefulWidget {
+  const PrayerTrackerScreen({super.key});
 
   @override
-  State<PrayerTrakerScreen> createState() => _PrayerTrakerScreenState();
+  State<PrayerTrackerScreen> createState() => _PrayerTrackerScreenState();
 }
 
-class _PrayerTrakerScreenState extends State<PrayerTrakerScreen> {
+class _PrayerTrackerScreenState extends State<PrayerTrackerScreen> {
   late final ConfettiController _confettiController;
 
   @override

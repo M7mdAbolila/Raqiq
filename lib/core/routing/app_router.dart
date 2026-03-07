@@ -12,7 +12,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => di.sl<PrayerCubit>()..loadData(),
-            child: const PrayerTrakerScreen(),
+            child: const PrayerTrackerScreen(),
           ),
         );
 

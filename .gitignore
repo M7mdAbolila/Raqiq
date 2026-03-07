@@ -33,6 +33,7 @@ migrate_working_dir/
 .pub/
 /build/
 /Raqiq_V1_Specification.md
+/code_review.md.resolved
 
 # Symbolication related
 app.*.symbols

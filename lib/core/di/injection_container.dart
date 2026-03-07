@@ -19,12 +19,30 @@ import 'package:shared_preferences/shared_preferences.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  // SharedPreferences
+  // ── External ──
   final prefs = await SharedPreferences.getInstance();
   final isDark = prefs.getBool('is_dark_mode') ?? true;
   final initialThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
 
-  // Cubits
+  final dir = await getApplicationDocumentsDirectory();
+  final isar = await Isar.open([PrayerDayModelSchema], directory: dir.path);
+  sl.registerLazySingleton(() => isar);
+
+  // ── Data sources ──
+  sl.registerLazySingleton<PrayerLocalDataSource>(
+    () => PrayerLocalDataSourceImpl(sl()),
+  );
+
+  // ── Repository ──
+  sl.registerLazySingleton<PrayerRepository>(() => PrayerRepositoryImpl(sl()));
+
+  // ── Use Cases ──
+  sl.registerLazySingleton(() => GetOrCreateDayUseCase(sl()));
+  sl.registerLazySingleton(() => GetYearDataUseCase(sl()));
+  sl.registerLazySingleton(() => GetStreakUseCase(sl()));
+  sl.registerLazySingleton(() => UpdateDayUseCase(sl()));
+
+  // ── Cubits ──
   sl.registerFactory(
     () => PrayerCubit(
       getOrCreateDayUseCase: sl(),
@@ -34,23 +52,4 @@ Future<void> init() async {
     ),
   );
   sl.registerLazySingleton(() => ThemeCubit(initialThemeMode));
-
-  // Use Cases
-  sl.registerLazySingleton(() => GetOrCreateDayUseCase(sl()));
-  sl.registerLazySingleton(() => GetYearDataUseCase(sl()));
-  sl.registerLazySingleton(() => GetStreakUseCase(sl()));
-  sl.registerLazySingleton(() => UpdateDayUseCase(sl()));
-
-  // Repository
-  sl.registerLazySingleton<PrayerRepository>(() => PrayerRepositoryImpl(sl()));
-
-  // Data sources
-  sl.registerLazySingleton<PrayerLocalDataSource>(
-    () => PrayerLocalDataSourceImpl(sl()),
-  );
-
-  // Isar
-  final dir = await getApplicationDocumentsDirectory();
-  final isar = await Isar.open([PrayerDayModelSchema], directory: dir.path);
-  sl.registerLazySingleton(() => isar);
 }

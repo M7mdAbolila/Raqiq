@@ -7,6 +7,10 @@ import '../../features/prayer_tracker/data/datasources/prayer_local_datasource_i
 import '../../features/prayer_tracker/data/models/prayer_day_model.dart';
 import '../../features/prayer_tracker/data/repos/prayer_repository_impl.dart';
 import '../../features/prayer_tracker/domain/repos/prayer_repository.dart';
+import '../../features/prayer_tracker/domain/usecases/get_or_create_day_usecase.dart';
+import '../../features/prayer_tracker/domain/usecases/get_streak_usecase.dart';
+import '../../features/prayer_tracker/domain/usecases/get_year_data_usecase.dart';
+import '../../features/prayer_tracker/domain/usecases/update_day_usecase.dart';
 import '../../features/prayer_tracker/presentation/cubit/prayer_cubit.dart';
 import '../../app/theme/theme_cubit/theme_cubit.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +25,21 @@ Future<void> init() async {
   final initialThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
 
   // Cubits
-  sl.registerFactory(() => PrayerCubit(sl()));
+  sl.registerFactory(
+    () => PrayerCubit(
+      getOrCreateDayUseCase: sl(),
+      getYearDataUseCase: sl(),
+      getStreakUseCase: sl(),
+      updateDayUseCase: sl(),
+    ),
+  );
   sl.registerLazySingleton(() => ThemeCubit(initialThemeMode));
+
+  // Use Cases
+  sl.registerLazySingleton(() => GetOrCreateDayUseCase(sl()));
+  sl.registerLazySingleton(() => GetYearDataUseCase(sl()));
+  sl.registerLazySingleton(() => GetStreakUseCase(sl()));
+  sl.registerLazySingleton(() => UpdateDayUseCase(sl()));
 
   // Repository
   sl.registerLazySingleton<PrayerRepository>(() => PrayerRepositoryImpl(sl()));

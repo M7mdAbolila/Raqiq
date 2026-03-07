@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:contribution_heatmap/contribution_heatmap.dart';
+import '../../domain/entities/prayer_day.dart';
 import '../../../../app/theme/app_colors.dart';
 
 class HeatmapSection extends StatelessWidget {
-  final Map<DateTime, int> heatmapData;
+  final Map<DateTime, PrayerDay> heatmapData;
   final void Function(DateTime date, int value)? onDayTap;
 
   const HeatmapSection({super.key, required this.heatmapData, this.onDayTap});
@@ -14,7 +15,7 @@ class HeatmapSection extends StatelessWidget {
     final now = DateTime.now();
 
     final entries = heatmapData.entries
-        .map((e) => ContributionEntry(e.key, e.value))
+        .map((e) => ContributionEntry(e.key, e.value.completedCount))
         .toList();
 
     return Container(

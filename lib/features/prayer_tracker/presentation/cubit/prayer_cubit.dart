@@ -4,6 +4,7 @@ import '../../domain/usecases/get_or_create_day_usecase.dart';
 import '../../domain/usecases/get_streak_usecase.dart';
 import '../../domain/usecases/get_year_data_usecase.dart';
 import '../../domain/usecases/update_day_usecase.dart';
+import '../../domain/entities/prayer_day.dart';
 import 'prayer_state.dart';
 
 class PrayerCubit extends Cubit<PrayerState> {
@@ -31,9 +32,9 @@ class PrayerCubit extends Cubit<PrayerState> {
       final yearData = await _getYearDataUseCase(year);
       final streak = await _getStreakUseCase();
 
-      final heatmapData = <DateTime, int>{};
+      final heatmapData = <DateTime, PrayerDay>{};
       for (final day in yearData) {
-        heatmapData[AppDateUtils.normalizeDate(day.date)] = day.completedCount;
+        heatmapData[AppDateUtils.normalizeDate(day.date)] = day;
       }
 
       emit(
@@ -54,9 +55,8 @@ class PrayerCubit extends Cubit<PrayerState> {
       final updated = await _updateDayUseCase(toggled);
       final streak = await _getStreakUseCase();
 
-      final heatmapData = Map<DateTime, int>.from(current.heatmapData);
-      heatmapData[AppDateUtils.normalizeDate(updated.date)] =
-          updated.completedCount;
+      final heatmapData = Map<DateTime, PrayerDay>.from(current.heatmapData);
+      heatmapData[AppDateUtils.normalizeDate(updated.date)] = updated;
 
       final showConfetti = !wasFullBefore && updated.isFullDay;
 

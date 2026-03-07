@@ -106,22 +106,7 @@ class DayDetailBottomSheet extends StatelessWidget {
     DateTime date,
   ) {
     final normalized = AppDateUtils.normalizeDate(date);
-    final completedCount = state.heatmapData[normalized] ?? 0;
-
-    PrayerDay? dayData;
-    if (normalized == AppDateUtils.normalizeDate(state.today.date)) {
-      dayData = state.today;
-    } else if (completedCount > 0) {
-      dayData = PrayerDay(
-        id: 0,
-        date: normalized,
-        fajr: completedCount >= 1,
-        dhuhr: completedCount >= 2,
-        asr: completedCount >= 3,
-        maghrib: completedCount >= 4,
-        isha: completedCount >= 5,
-      );
-    }
+    final dayData = state.heatmapData[normalized];
 
     showModalBottomSheet(
       context: context,

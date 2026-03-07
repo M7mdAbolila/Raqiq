@@ -11,6 +11,7 @@ abstract class PrayerState extends Equatable {
 class PrayerInitial extends PrayerState {
   const PrayerInitial();
 }
+
 class PrayerLoading extends PrayerState {
   const PrayerLoading();
 }
@@ -18,7 +19,7 @@ class PrayerLoading extends PrayerState {
 class PrayerLoaded extends PrayerState {
   final PrayerDay today;
 
-  final Map<DateTime, int> heatmapData;
+  final Map<DateTime, PrayerDay> heatmapData;
 
   final int streak;
 
@@ -33,7 +34,7 @@ class PrayerLoaded extends PrayerState {
 
   PrayerLoaded copyWith({
     PrayerDay? today,
-    Map<DateTime, int>? heatmapData,
+    Map<DateTime, PrayerDay>? heatmapData,
     int? streak,
     bool? showConfetti,
   }) {

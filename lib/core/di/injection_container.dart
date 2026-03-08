@@ -26,6 +26,7 @@ Future<void> init() async {
   final prefs = await SharedPreferences.getInstance();
   final isDark = prefs.getBool('is_dark_mode') ?? true;
   final initialThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+  sl.registerLazySingleton(() => ThemeCubit(initialThemeMode, prefs));
 
   final dir = await getApplicationDocumentsDirectory();
   final isar = await Isar.open([
@@ -61,5 +62,4 @@ Future<void> init() async {
       decreaseStreakUseCase: sl(),
     ),
   );
-  sl.registerLazySingleton(() => ThemeCubit(initialThemeMode));
 }

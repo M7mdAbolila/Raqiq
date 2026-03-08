@@ -4,15 +4,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'theme_state.dart';
 
 class ThemeCubit extends Cubit<ThemeState> {
-  static const _key = 'is_dark_mode';
+  final SharedPreferences _prefs;
 
-  ThemeCubit(ThemeMode initialMode) : super(ThemeState(themeMode: initialMode));
-
+  ThemeCubit(ThemeMode initialMode, this._prefs)
+    : super(ThemeState(themeMode: initialMode));
   Future<void> toggleTheme() async {
     final newMode = state.isDark ? ThemeMode.light : ThemeMode.dark;
     emit(ThemeState(themeMode: newMode));
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_key, newMode == ThemeMode.dark);
+    await _prefs.setBool('is_dark_mode', newMode == ThemeMode.dark);
   }
 }

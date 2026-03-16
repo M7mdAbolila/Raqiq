@@ -1,8 +1,12 @@
-# 🌿 Raqiq
+# 🌿 Raqiq v1
 
 Raqiq is a modern, minimal, and spiritually-inspired Islamic lifestyle app. V1 focuses on prayer tracking with a beautiful UI designed to foster consistency and spiritual refinement.
 
 The name **Raqiq** represents softness of the heart, consistency, and spiritual elegance.
+
+## DEMO
+
+https://github.com/user-attachments/assets/0d34ef29-4c62-42e8-b1de-abb83c0fd28f
 
 ## ✨ Features (V1)
 
